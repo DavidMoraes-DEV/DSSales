@@ -6,6 +6,8 @@
   --primary-color: #283142;
   --secondary-color: #1B2531;
   --ligth-color: #E9E9E9;
+  --grey-light-50-color: #9AAABE;
+  --grey-light-100-color: #384459;
 }
 
 body {
@@ -17,4 +19,9 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
+}
+
+.base-card {
+  background: var(--primary-color);
+  border-radius: 10px;
 }
