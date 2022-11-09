@@ -9,3 +9,9 @@ export const formatPrice = (price: number) => {
 export const formtDate = (date: Date) => {
   return date.toLocaleDateString();
 };
+
+export const formatDateToServe = (date?: Date) => {
+  if (date) {
+    return date?.toISOString().substring(0, 10);
+  }
+};
