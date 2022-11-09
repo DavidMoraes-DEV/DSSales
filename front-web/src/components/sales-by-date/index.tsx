@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { ChartSeriesData, FilterData, SalesByDate } from '../../types';
-import { formatPrice, formtDate } from '../../utils/formatters';
+import { formatPrice, formatDate } from '../../utils/formatters';
 import { buildFilterParams, makeRequest } from '../../utils/request';
 import { buildChartSeries, chartOptions, sumSalesByDate } from './helpers';
 import './styles.css';
@@ -35,7 +35,7 @@ function SalesByDateComponent({ filterData }: Props) {
         <h4 className="sales-by-date-tittle">Evolução de vendas</h4>
         {filterData?.dates && (
           <span className="sales-by-date-period">
-            {formtDate(filterData?.dates?.[0])} até {formtDate(filterData?.dates?.[1])}
+            {formatDate(filterData?.dates?.[0])} até {formatDate(filterData?.dates?.[1])}
           </span>
         )}
       </div>
