@@ -1,27 +1,26 @@
+import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { chartOptions } from './helpers';
+import { ChartSeriesData, SalesByDate } from '../../types';
+import { formatPrice } from '../../utils/formatters';
+import { makeRequest } from '../../utils/request';
+import { buildChartSeries, chartOptions, sumSalesByDate } from './helpers';
 import './styles.css';
 
-const initialData = [
-  {
-    x: '2020-01-01',
-    y: 504
-  },
-  {
-    x: '2020-02-01',
-    y: 106
-  },
-  {
-    x: '2020-03-01',
-    y: 104
-  },
-  {
-    x: '2020-04-01',
-    y: 100
-  }
-];
+function SalesByDateComponent() {
+  const [chartSeries, setChartSeries] = useState<ChartSeriesData[]>([]);
+  const [totalSum, setTotalSum] = useState(0);
 
-function SalesByDate() {
+  useEffect(() => {
+    makeRequest
+      .get<SalesByDate[]>('/sales/by-date?minDate=2017-01-01&maxDate=2017-01-31&gender=FEMALE')
+      .then((response) => {
+        const newChartSeries = buildChartSeries(response.data);
+        setChartSeries(newChartSeries);
+        const newTotalSum = sumSalesByDate(response.data);
+        setTotalSum(newTotalSum);
+      });
+  }, []);
+
   return (
     <div className="base-card sales-by-date-container">
       <div>
@@ -30,7 +29,7 @@ function SalesByDate() {
       </div>
       <div className="sales-by-date-data">
         <div className="sales-by-date-quatity-container">
-          <h2 className="sales-by-date-quatity">464.988,00</h2>
+          <h2 className="sales-by-date-quatity">{formatPrice(totalSum)}</h2>
           <span className="sales-by-date-quatity-label">Vendas no período</span>
           <span className="sales-by-date-quatity-description">
             O gráfico mostra as vendas em todas as lojas
@@ -39,7 +38,7 @@ function SalesByDate() {
         <div className="sales-by-date-chart">
           <ReactApexChart
             options={chartOptions}
-            series={[{ name: 'Vendas', data: initialData }]}
+            series={[{ name: 'Vendas', data: chartSeries }]}
             type="bar"
             height={240}
             width="100%"
@@ -50,4 +49,4 @@ function SalesByDate() {
   );
 }
 
-export default SalesByDate;
+export default SalesByDateComponent;
